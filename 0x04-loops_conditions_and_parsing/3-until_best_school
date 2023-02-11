@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# Displays until loop Best School 10 times
-
-COUNT=0
-until [ "$COUNT" -eq 10 ]; do
-	echo "Best School"
-	let COUNT=COUNT+1
-done
+# Bash script that display Best School 10 times
+i=0
+until [[ $i -ge 10 ]]; do echo "Best School"; i=$(( i + 1 )); done
