@@ -1,0 +1,1 @@
+For this project, we are taught how important and beneficial it is as a software engineer to automate our work. In this case, we will be automating the configuration of a web server that we have been given to work with.
