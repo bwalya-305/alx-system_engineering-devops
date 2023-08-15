@@ -5,15 +5,15 @@ of given keywords (case-insensitive, delimited by spaces.
 Javascript should count as javascript, but java should not).
 """
 import pprint
-import sys
+import re
 import requests
 
-BASE_URL = 'https://reddit.com/r/{}/hot.json'
+BASE_URL = 'http://reddit.com/r/{}/hot.json'
 
 
 def count_words(subreddit, word_list, hot_list=[], after=None):
     '''function count_words : Get ALL hot posts'''
-    headers = {'User-agent': 'Mozilla/5.0'}
+    headers = {'User-agent': 'Unix:0-subs:v1'}
     params = {'limit': 100}
     if isinstance(after, str):
         if after != "STOP":
@@ -49,4 +49,3 @@ def print_results(word_list, hot_list):
     for word in sorted(words,
                        reverse=True, key=lambda k: count[k]):
         print("{}: {}".format(word, count[word]))
-
