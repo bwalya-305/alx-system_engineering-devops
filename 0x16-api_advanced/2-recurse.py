@@ -2,21 +2,24 @@
 """ recursive function that queries the Reddit API """
 import requests
 
-def recurse(subreddit, hot_list=[], after=None):
+def recurse(subreddit, hot_list=[]):
+
     headers = {'User-Agent': 'xica369'}
-    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
-    params = {"after": after}
-    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
+    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
+    parameters = {'after': after}
+    response = requests.get(url, headers=headers, allow_redirects=False,
+                            params=parameters)
 
     if response.status_code != 200:
         return None
-
-    data = response.json()
-    children = data["data"]["children"]
-    for child in children:
-        hot_list.append(child["data"]["title"])
-    after = data["data"]["after"]
-    if after is not None:
-        return recurse(subreddit, hot_list, after)
-    return hot_list
+        next_ = response.json().get('data').get('after')
+        if next_ is not None:
+            after = next_
+            recurse(subreddit, hot_list)
+        list_titles = response.json().get('data').get('children')
+        for title_ in list_titles:
+            hot_list.append(title_.get('data').get('title'))
+        return hot_list
+    else:
+        return (None)
 
