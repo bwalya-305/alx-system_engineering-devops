@@ -1,8 +1,6 @@
 #!/usr/bin/python3
 """ recursive function that queries the Reddit API """
 import requests
-import sys
-after = None
 
 def recurse(subreddit, hot_list=[], after=None):
     headers = {'User-Agent': 'xica369'}
