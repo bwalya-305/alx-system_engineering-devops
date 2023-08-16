@@ -4,30 +4,21 @@ import requests
 import sys
 after = None
 
-
-def recurse(subreddit, hot_list=[]):
-    """     Args:
-        subreddit: subreddit name
-        hot_list: list of hot titles in subreddit
-        after: last hot_item appended to hot_list
-    Returns:
-        a list containing the titles of all hot articles for the subreddit
-        or None if queried subreddit is invalid """
-    global after
+def recurse(subreddit, hot_list=[], after=None):
     headers = {'User-Agent': 'xica369'}
-    url = "https://www.reddit.com/r/{}/hot.json".format(subreddit)
-    parameters = {'after': after}
-    response = requests.get(url, headers=headers, allow_redirects=False,
-                            params=parameters)
+    url = f"https://www.reddit.com/r/{subreddit}/hot.json"
+    params = {"after": after}
+    response = requests.get(url, headers=headers, params=params, allow_redirects=False)
 
-    if response.status_code == 200:
-        next_ = response.json().get('data').get('after')
-        if next_ is not None:
-            after = next_
-            recurse(subreddit, hot_list)
-        list_titles = response.json().get('data').get('children')
-        for title_ in list_titles:
-            hot_list.append(title_.get('data').get('title'))
-        return hot_list
-    else:
-        return (None)
+    if response.status_code != 200:
+        return None
+
+    data = response.json()
+    children = data["data"]["children"]
+    for child in children:
+        hot_list.append(child["data"]["title"])
+    after = data["data"]["after"]
+    if after is not None:
+        return recurse(subreddit, hot_list, after)
+    return hot_list
+
