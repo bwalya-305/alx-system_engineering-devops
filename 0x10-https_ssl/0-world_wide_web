@@ -1,19 +1,15 @@
 #!/usr/bin/env bash
 # bash script to display information about subdomains
 
-if [ $# -eq 2 ]
-then
-    URL="$2.$1"
-    IP=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')
-    RECORDTYPE=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')
-    echo "The subdomain $2 is a $RECORDTYPE record and points to $IP"
-elif [ $# -eq 1 ]
-then
-    for DOMAIN in 'www' 'lb-01' 'web-01' 'web-02'
-    do
-        URL="$DOMAIN.$1"
-        IP=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $5}')
-        RECORDTYPE=$(dig "$URL" | grep -A1 'ANSWER SECTION:' | tail -1 | awk '{print $4}')
-        echo "The subdomain $DOMAIN is a $RECORDTYPE record and points to $IP"
-    done
+domain=$1
+
+if [ "$#" -eq 2 ]; then
+    subdomain=$2
+else
+    subdomain=("www" "lb-01" "web-01" "web-02")
 fi
+
+for sub in "${subdomain[@]}"; do
+    echo -n "The subdomain $sub"
+    dig "$sub.$domain" | grep -A1 'ANSWER SECTION:' | tail -n -1 | awk '{ print " is a " $4 " record and points to " $5}'
+done
