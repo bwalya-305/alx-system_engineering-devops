@@ -1,4 +1,4 @@
-# fix the limit nginx
+# fix the limit nginx.
 # Increases the amount of traffic an Nginx server can handle.
 
 exec { 'fix--for-nginx':
