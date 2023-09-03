@@ -1,4 +1,5 @@
 # Postmortem
+![PNG](https://www.vhv.rs/dpng/d/449-4498777_windows-internetexplorer-offline-nointernet-reality-you-are-offline.png)
 
 A postmortem is a tool widely used in the tech industry. After any outage, the team(s) in charge of the system will write a summary that has 2 main goals:
 
